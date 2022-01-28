@@ -24,7 +24,15 @@ def parser(namestr='qprog'):
             namestr, sample_body.replace('\n', '\n  ')
         )
 
-        p[0] = ('%s\n\n%s'%(pqwhile_prog, sample_prog), p[1][1])
+        sample2_body = 'mutable sum = 0.;\nfor j in 1..SAMPLE_NUM {\n'
+        sample2_body += '  let (temp, c) = %s(PARAMETERS);\n'%(namestr)
+        sample2_body += '  set sum += c[0] * c[0] * OBSERVABLE[ResultArrayAsInt(temp)];\n}\n' # there we only use c[0]
+        sample2_body += 'return sum / IntAsDouble(SAMPLE_NUM);'
+        sample2_prog = 'operation sample2_%s(SAMPLE_NUM: Int, PARAMETERS: Double[], OBSERVABLE: Double[]): Double {\n  %s\n}'%(
+            namestr, sample2_body.replace('\n', '\n  ')
+        )
+
+        p[0] = ('%s\n\n%s\n\n%s'%(pqwhile_prog, sample_prog, sample2_prog), p[1][1])
 
     def p_qprog(p):
         '''qprog    : qenv program
@@ -167,7 +175,7 @@ def parser(namestr='qprog'):
                 | bool AND bool
                 | bool OR bool'''
         if p[1] == 'M':
-            p[0] = '(M(%s) == %s)'%(p[3], 'Zero' if p[6] == 0 else 'One')
+            p[0] = '(M(%s) == %s)'%(p[3], 'Zero' if p[6] == '0' else 'One')
         else:
             p[0] = '(%s %s %s)'%(p[1], p[2], p[3])
 

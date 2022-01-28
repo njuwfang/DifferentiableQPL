@@ -1,7 +1,7 @@
 from .OriginalParser import parser as originalparser
 from .DifferentialParser import parser as differentialparser
 
-def parse(qprog, qsharpstr='Operation.qs', namestr='qprog', method='commutator', diff_num=-1):
+def parse(qprog, qsharpstr='Operation.qs', namestr='qprog', method='commutator', mu_para=0.25, diff_num=-1):
     with open(qsharpstr, 'w') as qsharp_file:
         preamble_code = 'namespace Gradient {\n'
         preamble_code += '  open Microsoft.Quantum.Canon;\n'
@@ -22,7 +22,7 @@ def parse(qprog, qsharpstr='Operation.qs', namestr='qprog', method='commutator',
         diff_num = min(diff_num, len(params))
 
         for j in range(diff_num):
-            b = differentialparser(params[j], 'pd%s_%s'%(namestr, params[j]), method)
+            b = differentialparser(params[j], 'pd%s_%s'%(namestr, params[j]), method, mu_para)
             print('\n  %s'%(b.parse(qprog).replace('\n', '\n  ')), file = qsharp_file)
     
         gradient_code = '\n  operation gradient_%s(SAMPLE_NUM: Int, PARAMETERS: Double[], OBSERVABLE: Double[]): Double[] {\n'%(namestr)

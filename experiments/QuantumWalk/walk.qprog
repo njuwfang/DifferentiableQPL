@@ -1,0 +1,107 @@
+qubit: c1, c2, v1, v2, u1, u2
+para: t1,t2, n
+count: c
+
+while M[c1] = 0 do
+    c1:=|0>;
+    c2:=|0>;
+    v1:=|0>;
+    v2:=|0>;
+    u1:=|0>;
+    u2:=|0>;
+
+    H[v1];
+    H[v2];
+    H[u1];
+    H[u2];
+
+    X[c1];
+    X[c2];
+    C_Z[u1,u2,v1,v2,c1][c2];
+    C_Z[c1][c2];
+    X[c2];
+    X[c1];
+    H[c1];
+    H[c2];
+
+    C_X[c1,u2][u1];
+    C_X[c1,u1][u2];
+    C_X[c1][u1];
+    C_X[c1,u1][u2];
+    C_X[c1][u1];
+
+    X[c1];
+    C_X[c1][u1];
+    C_X[c1,u1][u2];
+    C_X[c1][u1];
+    C_X[c1,u1][u2];
+    C_X[c1,u2][u1];
+    X[c1];
+
+    C_X[c2,v2][v1];
+    C_X[c2,v1][v2];
+    C_X[c2][v1];
+    C_X[c2,v1][v2];
+    C_X[c2][v1];
+
+    X[c2];
+    C_X[c2][v1];
+    C_X[c2,v1][v2];
+    C_X[c2][v1];
+    C_X[c2,v1][v2];
+    C_X[c2,v2][v1];
+    X[c2];
+
+    Rx(t1)[c1];
+    Rx(t2)[c2];
+
+    H[c1];
+    H[c2];
+    X[c1];
+    X[c2];
+    C_Z[c1,c2,u1,u2,v1][v2];
+    C_Z[c1][c2];
+    X[c2];
+    X[c1];
+    H[c1];
+    H[c2];
+
+    C_X[c1,u2][u1];
+    C_X[c1,u1][u2];
+    C_X[c1][u1];
+    C_X[c1,u1][u2];
+    C_X[c1][u1];
+
+    X[c1];
+    C_X[c1][u1];
+    C_X[c1,u1][u2];
+    C_X[c1][u1];
+    C_X[c1,u1][u2];
+    C_X[c1,u2][u1];
+    X[c1];
+
+    C_X[c2,v2][v1];
+    C_X[c2,v1][v2];
+    C_X[c2][v1];
+    C_X[c2,v1][v2];
+    C_X[c2][v1];
+
+    X[c2];
+    C_X[c2][v1];
+    C_X[c2,v1][v2];
+    C_X[c2][v1];
+    C_X[c2,v1][v2];
+    C_X[c2,v2][v1];
+    X[c2];
+
+
+    if c < n then
+        c++
+    else
+        skip
+    fi;
+
+    c1:=|0>;
+    C_X[u1,u2,v1,v2][c1]
+
+od

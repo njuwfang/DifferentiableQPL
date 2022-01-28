@@ -5,7 +5,7 @@ def parser(pvar, namestr='dqprog', method='commutator', mu_para=0.25):
     from .QwhileLexer import tokens
 
     mu = lambda x: 1./x/mp.log(x+mp.exp(1))**(1+mu_para)
-    mu_sum = mp.nsum(mu, [1, mp.inf])
+    mu_sum = mp.nsum(mu, [1, mp.inf]) * 1.01
     alpha = 'PI() / 4.'
 
     precedence = (
@@ -70,9 +70,9 @@ def parser(pvar, namestr='dqprog', method='commutator', mu_para=0.25):
 
         # Initialize extra variables
         if method == 'commutator':
-            p[0] += '  if (M[%s] == One) { X(%s);}\n'%(qa, qa)
-        p[0] += '  if (M[%s] == One) { X(%s);}\n'%(q1, q1)
-        p[0] += '  if (M[%s] == One) { X(%s);}\n'%(q2, q2)
+            p[0] += '  if (M(%s) == One) { X(%s);}\n'%(qa, qa)
+        p[0] += '  if (M(%s) == One) { X(%s);}\n'%(q1, q1)
+        p[0] += '  if (M(%s) == One) { X(%s);}\n'%(q2, q2)
         c = pvar + '_c'
         ps = pvar + '_ps'
         s = pvar + '_s'
@@ -249,12 +249,12 @@ def parser(pvar, namestr='dqprog', method='commutator', mu_para=0.25):
                 else:
                     p[0] += '    if (M(%s) == Zero) {\n'%(q2)
                     p[0] += '      H(%s);\n'%(q2)
-                    p[0] += '      if (M(%s) == Zero) { %s(PI() / 2., %s); set %s = 2.;}\n'%(q2, p[1], p[5], flag)
-                    p[0] += '      else { %s(-PI() / 2., %s); set %s = -2.;}\n'%(p[1], p[5], flag)
+                    p[0] += '      if (M(%s) == Zero) { %s([%s], (PI() / 2., %s)); set %s = 2.;}\n'%(q2, p[1], p[5], p[6], flag)
+                    p[0] += '      else { %s([%s], (-PI() / 2., %s)); set %s = -2.;}\n'%(p[1], p[5], p[6], flag)
                     p[0] += '    } else {\n'
                     p[0] += '      H(%s);\n'%(q2)
-                    p[0] += '      if (M(%s) == Zero) { %s(PI(), %s); set %s = 2.-2.*Sqrt(2);}\n'%(q2, p[1], p[5], flag)
-                    p[0] += '      else { %s(-PI(), %s); set %s = 2.*Sqrt(2)-2.;}\n    }\n'%(p[1], p[5], flag)
+                    p[0] += '      if (M(%s) == Zero) { %s([%s], (PI(), %s)); set %s = 1.0-1.0*Sqrt(2.);}\n'%(q2, p[1], p[5], p[6], flag)
+                    p[0] += '      else { %s([%s], (-PI(), %s)); set %s = 1.0*Sqrt(2.)-1.0;}\n    }\n'%(p[1], p[5], p[6], flag)
             else:
                 raise Exception('unsupported method %s'%(method))
             p[0] += '  }\n}\n'
@@ -296,7 +296,7 @@ def parser(pvar, namestr='dqprog', method='commutator', mu_para=0.25):
                 | bool AND bool
                 | bool OR bool'''
         if p[1] == 'M':
-            p[0] = '(M(%s) == %s)'%(p[3], 'Zero' if p[6] == 0 else 'One')
+            p[0] = '(M(%s) == %s)'%(p[3], 'Zero' if p[6] == '0' else 'One')
         else:
             p[0] = '(%s %s %s)'%(p[1], p[2], p[3])
 

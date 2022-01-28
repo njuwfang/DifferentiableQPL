@@ -1,0 +1,40 @@
+qubit: q, r
+para: t1,t2,t3,s1,s2,s3,s4,s5,s6,t4,t5
+
+
+Rx(t4)[q];
+Ry(t5)[q];
+
+r:=|0>;
+H[r];
+C_Rz(s1)[r][q];
+C_Ry(s2)[r][q];
+C_Rz(s3)[r][q];
+X[r];
+C_Rz(s4)[r][q];
+C_Ry(s5)[r][q];
+C_Rz(s6)[r][q];
+X[r];
+
+while M[r] = 1 do
+    Rz(t1)[q];
+    Ry(t2)[q];
+    Rz(t3)[q];
+
+    r:=|0>;
+    H[r];
+    C_Rz(s1)[r][q];
+    C_Ry(s2)[r][q];
+    C_Rz(s3)[r][q];
+    X[r];
+    C_Rz(s4)[r][q];
+    C_Ry(s5)[r][q];
+    C_Rz(s6)[r][q];
+    X[r]
+od;
+
+Rz(-s6)[q];
+Ry(-s5)[q];
+Rz(-s4)[q];
+Ry(-t5)[q];
+Rx(-t4)[q]

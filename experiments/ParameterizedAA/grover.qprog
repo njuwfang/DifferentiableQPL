@@ -1,0 +1,19 @@
+qubit: q, r
+para: t, a, n
+count: c
+
+q := |0>;
+r := |0>;
+Ry(a)[q];
+while M[r] = 0 do
+    Z[q];
+    Ry(-a)[q];
+    Z[q];
+    Ry(a)[q];
+    C_Ry(t)[q][r];
+    if c <= n then
+        c++
+    else
+        skip
+    fi
+od
