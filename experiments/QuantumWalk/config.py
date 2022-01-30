@@ -4,7 +4,8 @@ import random
 print('\nFinding the optimal parameter for quantum walk')
 print('==============================================')
 
-SAMPLE_NUM = 20000
+GSAMPLE_NUM = 20000
+SAMPLE_NUM = GSAMPLE_NUM
 MAX_STEPS = 100
 PARAMS_NUM = 2
 PARAMS_SCALE = 1

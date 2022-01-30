@@ -13,7 +13,7 @@
 /pqwhile/parsetab.py
 
 # Q# output
-*.qs
+#*.qs
 
 # test
 /test/

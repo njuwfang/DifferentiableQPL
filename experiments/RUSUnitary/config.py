@@ -4,8 +4,8 @@ import random
 print('\nFinding the optimal parameter for RUS')
 print('=====================================')
 
-GSAMPLE_NUM = 15300
-SAMPLE_NUM = GSAMPLE_NUM * 2
+GSAMPLE_NUM = 47200
+SAMPLE_NUM = GSAMPLE_NUM
 MAX_STEPS = 100
 PARAMS_NUM = 3
 PARAMS_SCALE = 1
@@ -38,6 +38,7 @@ def loss(f, df, x):
     fs = np.zeros([n])
     dfs = np.zeros([n, PARAMS_NUM])
     for j in range(n):
-        fs[j] = f(np.block([x, random_params, np.array(is1[j], is2[j])]))
-        dfs[j] = df(np.block([x, random_params, np.array(is1[j], is2[j])]))[0:PARAMS_NUM]
+        xx = np.block([x, random_params, np.array([is1[j], is2[j]])])
+        fs[j] = f(xx)
+        dfs[j] = df(xx)[0:PARAMS_NUM]
     return np.sum((fs - 1) * (fs - 1)) / n, (fs - 1) @ dfs * 2./n
